@@ -1,0 +1,6 @@
+"0",""
+"0","char_chart <- ggplot(review_text, aes(x=char_count)) +"
+"0","  geom_histogram(binwidth=1, fill=""black"") +"
+"0","  labs(title = ""Fanfiction Review Word Counts by Frequency"")"
+"0","update_labels(word_chart, list(x = ""Character Count"", y = ""Frequency""))"
+"0",""
