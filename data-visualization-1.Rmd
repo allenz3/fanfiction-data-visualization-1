@@ -1,13 +1,11 @@
 ---
 title: "Fanfiction Review Data Visualizations"
 author: "Allen Zhou"
-date: "10/28/2021"
+date: "10/27/2021"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
 library(dplyr)
 library(ggplot2)
 library(stringr)
@@ -18,51 +16,29 @@ file <- paste(getwd(), "/data/fall_2020_-_batch_tewzr_allen_zhou.csv", sep="")
 data <- read.csv(file)
 ```
 
-Organizing the Data
-
-Part 1
+prep
 
 ```{r, echo=TRUE}
-
-#hand-drawn idea data
-positive <- filter(data, Valence == "Positive")
+positive <- filter(data, Valence=="Positive")
 nrow(positive)
-neutral <- filter(data, Valence == "Neutral")
+neutral <- filter(data, Valence=="Neutral")
 nrow(neutral)
-negative <- filter(data, Valence == "Negative")
+negative <- filter(data, Valence=="Negative")
 nrow(negative)
-unknown <- filter(data, Valence == "Unknown")
+unknown <- filter(data, Valence=="Unknown")
 nrow(unknown)
-
 ```
 
-Hand-Drawn Data Visualization
 
-![hand-drawn visualization idea](images/hand-drawn-visual.png)
+hand written version
 
-Parts 2 and 3
+![hand written graph](images/hand-written-idea.png)
 
-```{r, echo=FALSE}
+code version 1
 
-#code/software generated idea
-
+```{r, echo=TRUE}
 review_text <- select(data, Text) %>%
   mutate(word_count = str_count(Text, '\\w+'))
-
-review_text_positive <- select(positive, Text) %>%
-  mutate(word_count = str_count(Text, '\\w+'))
-review_text_neutral <- select(neutral, Text) %>%
-  mutate(word_count = str_count(Text, '\\w+'))
-review_text_negative <- select(negative, Text) %>%
-  mutate(word_count = str_count(Text, '\\w+'))
-review_text_unknown <- select(unknown, Text) %>%
-  mutate(word_count = str_count(Text, '\\w+'))
-
-```
-
-Word Count Visualization
-
-```{r, echo=TRUE}
 
 word_chart <- ggplot(review_text, aes(x=word_count)) +
   geom_histogram(binwidth=1, fill="black") +
@@ -70,12 +46,15 @@ word_chart <- ggplot(review_text, aes(x=word_count)) +
   ylim(0, 25) +
   labs(title = "Fanfiction Review Word Counts by Frequency")
 update_labels(word_chart, list(x = "Word Count", y = "Frequency"))
-
 ```
 
-Word Count By Valence Visualization
+code version 2
+
+Positive
 
 ```{r, echo=TRUE}
+review_text_positive <- positive %>%
+  mutate(word_count = str_count(Text, '\\w+'))
 
 word_chart_positive <- ggplot(review_text_positive, aes(x=word_count)) +
   geom_histogram(binwidth=1, fill="green") +
@@ -83,6 +62,13 @@ word_chart_positive <- ggplot(review_text_positive, aes(x=word_count)) +
   ylim(0, 25) +
   labs(title = "Fanfiction Review Word Counts by Frequency")
 update_labels(word_chart_positive, list(x = "Word Count", y = "Frequency"))
+```
+
+Neutral
+
+```{r, echo=TRUE}
+review_text_neutral <- neutral %>%
+  mutate(word_count = str_count(Text, '\\w+'))
 
 word_chart_neutral <- ggplot(review_text_neutral, aes(x=word_count)) +
   geom_histogram(binwidth=1, fill="yellow") +
@@ -90,6 +76,13 @@ word_chart_neutral <- ggplot(review_text_neutral, aes(x=word_count)) +
   ylim(0, 25) +
   labs(title = "Fanfiction Review Word Counts by Frequency")
 update_labels(word_chart_neutral, list(x = "Word Count", y = "Frequency"))
+```
+
+Negative
+
+```{r, echo=TRUE}
+review_text_negative <- negative %>%
+  mutate(word_count = str_count(Text, '\\w+'))
 
 word_chart_negative <- ggplot(review_text_negative, aes(x=word_count)) +
   geom_histogram(binwidth=1, fill="red") +
@@ -97,6 +90,13 @@ word_chart_negative <- ggplot(review_text_negative, aes(x=word_count)) +
   ylim(0, 25) +
   labs(title = "Fanfiction Review Word Counts by Frequency")
 update_labels(word_chart_negative, list(x = "Word Count", y = "Frequency"))
+```
+
+Unknown
+
+```{r, echo=TRUE}
+review_text_unknown <- unknown %>%
+  mutate(word_count = str_count(Text, '\\w+'))
 
 word_chart_unknown <- ggplot(review_text_unknown, aes(x=word_count)) +
   geom_histogram(binwidth=1, fill="blue") +
@@ -104,5 +104,4 @@ word_chart_unknown <- ggplot(review_text_unknown, aes(x=word_count)) +
   ylim(0, 25) +
   labs(title = "Fanfiction Review Word Counts by Frequency")
 update_labels(word_chart_unknown, list(x = "Word Count", y = "Frequency"))
-
 ```
